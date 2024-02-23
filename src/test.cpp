@@ -5,7 +5,7 @@
 #include "LEAGUE/common_data_structures.h"
 #include "LEAGUE/engine.h"
 #include "LEAGUE/physics.h"
-#include "ball.h"
+#include "background.h"
 
 int main(int argc, char** argv){
 	int opt;
@@ -14,8 +14,10 @@ int main(int argc, char** argv){
 	}
 	Scene scene;
 	Engine* engine = Engine::getInstance();
-	PhysicsWorld physics(b2Vec2(0.0, -10.0f));
-
+    //PhysicsWorld physics(b2Vec2(0.0, -10.0f));
+    
+    Background b;
+    /*
 	b2BodyDef groundDef;
 	groundDef.position.Set(0.0f, -7.6f);
 	groundDef.type=b2_staticBody;
@@ -40,10 +42,13 @@ int main(int argc, char** argv){
 	b2PolygonShape rightBox;
 	rightBox.SetAsBox(1.0f, 50.0f);
 	right->CreateFixture(&rightBox, 1.0f);
-
+    */
 	
+    
+    scene.addDrawable(b);
 
-	scene.addUpdateable(physics);
-	engine->core_loop(scene);
+	//scene.addUpdateable(physics);
+	
+    engine->core_loop(scene);
 	engine->shutdown();
 }

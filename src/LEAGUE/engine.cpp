@@ -77,8 +77,8 @@ bool Engine::setup(){
 
 	window = SDL_CreateWindow(GAME_TITLE, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
 			SCREEN_WIDTH_DEFAULT, SCREEN_HEIGHT_DEFAULT,
-			//SDL_WINDOW_SHOWN);
-			SDL_WINDOW_OPENGL);
+			SDL_WINDOW_SHOWN);
+			//SDL_WINDOW_OPENGL);
 	if(!window){
 		SDL_Log("FAILED to create window: %s", SDL_GetError());
 		IMG_Quit();
@@ -86,8 +86,8 @@ bool Engine::setup(){
 		return false;
 	}
 	int flags = SDL_RENDERER_ACCELERATED;
-	//renderer = SDL_CreateRenderer(window, -1, flags);
-	context = SDL_GL_CreateContext(window);
+	renderer = SDL_CreateRenderer(window, -1, flags);
+//	context = SDL_GL_CreateContext(window);
 
 	L = luaL_newstate();
 	luaL_openlibs(L);
@@ -137,18 +137,18 @@ void Engine::core_loop(Scene& s){
 		}
 
 		// Render outputs.
-		//SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR);
-		//SDL_RenderClear(renderer);
-		//auto drawables = s.getDrawables();
-		//for(auto obj = drawables.begin(); obj != drawables.end(); ++obj){
-		//	obj->get().draw(renderer);
-		//} 
-		//SDL_RenderPresent(renderer);
+		SDL_SetRenderDrawColor(renderer, BACKGROUND_COLOR);
+		SDL_RenderClear(renderer);
+		auto drawables = s.getDrawables();
+		for(auto obj = drawables.begin(); obj != drawables.end(); ++obj){
+			obj->get().draw(renderer);
+		} 
+		SDL_RenderPresent(renderer);
 
-		glClearColor(1.f, 0.f, 1.f, 0.f);
-		glClear(GL_COLOR_BUFFER_BIT);
+//		glClearColor(1.f, 0.f, 1.f, 0.f);
+//		glClear(GL_COLOR_BUFFER_BIT);
 
-		SDL_GL_SwapWindow(window);
+//		SDL_GL_SwapWindow(window);
 
 		// What is going on here???
 		// SDL_GetPerformanceFrequency() is a platform-specific counter.  It returns the
