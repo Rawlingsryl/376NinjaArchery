@@ -5,7 +5,7 @@
 #include "LEAGUE/physics.h"
 #include <box2d/box2d.h>
 
-class Ball : public Drawable, public Updateable {
+class Ball : public Drawable, public Updateable, public b2ContactListener {
 	public:
 		Ball(PhysicsWorld*);
 		~Ball();
@@ -15,6 +15,8 @@ class Ball : public Drawable, public Updateable {
 		void setBody(b2Body*);
 		b2BodyDef* getBodyDef();
 		b2Body* getBody();
+        void BeginContact(b2Contact* contact) override;
+        void EndContact(b2Contact* contact) override;
 	private:
 		int x_vel;
 		int y_vel;

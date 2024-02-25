@@ -18,7 +18,7 @@ Ball::Ball(PhysicsWorld* physics){
 	// Need a body definition before we can make a body
 	bodyDef = new b2BodyDef();
 	bodyDef->type = b2_dynamicBody;
-	bodyDef->position.Set(distribution(gen) + distribution(gen) / 10.0f, - distribution(gen));
+	bodyDef->position.Set(3.5,.5);
 	// Physics engine makes the body for us and returns a pointer to it
 	body = physics->addBody(bodyDef);
 	// Need a shape
@@ -75,6 +75,14 @@ void Ball::draw(SDL_Renderer* renderer){
 	if(result != 0){
 		std::cout << SDL_GetError() << std::endl;
 	}
+}
+
+void Ball::BeginContact(b2Contact* contact){
+    std::cout << contact->GetFixtureB() << std::endl;
+}
+
+void Ball::EndContact(b2Contact* contact){
+    
 }
 
 b2Body* Ball::getBody(){

@@ -10,7 +10,8 @@ class PhysicsWorld : public Updateable {
 		b2Body* addBody(b2BodyDef* bodyDefinition);
 		b2Joint* addJoint(b2JointDef* jointDefinition);
 		void update(double delta);
-	private:
+        b2World* getWorld();        
+    private:
 		b2Vec2 gravity;
 		b2World world;
 		int velocityIterations = 6;

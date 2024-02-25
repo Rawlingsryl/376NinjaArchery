@@ -6,6 +6,8 @@
 #include "LEAGUE/engine.h"
 #include "LEAGUE/physics.h"
 #include "background.h"
+#include "ball.h"
+#include "player.h"
 
 int main(int argc, char** argv){
 	int opt;
@@ -14,19 +16,17 @@ int main(int argc, char** argv){
 	}
 	Scene scene;
 	Engine* engine = Engine::getInstance();
-    //PhysicsWorld physics(b2Vec2(0.0, -10.0f));
-    
-    Background b;
-    /*
+    PhysicsWorld physics(b2Vec2(0.0, -10.0f));
+
 	b2BodyDef groundDef;
-	groundDef.position.Set(0.0f, -7.6f);
+	groundDef.position.Set(0.0f, -4.5f);
 	groundDef.type=b2_staticBody;
 	b2Body* ground = physics.addBody(&groundDef);
 	b2PolygonShape groundBox;
 	groundBox.SetAsBox(50.0f, 1.0f);
 	ground->CreateFixture(&groundBox, 1.0f);
 
-
+    /*
 	b2BodyDef leftDef;
 	leftDef.position.Set(0.0f, -7.6f);
 	leftDef.type=b2_staticBody;
@@ -43,12 +43,22 @@ int main(int argc, char** argv){
 	rightBox.SetAsBox(1.0f, 50.0f);
 	right->CreateFixture(&rightBox, 1.0f);
     */
-	
-    
+	  
+    Background b;
     scene.addDrawable(b);
 
-	//scene.addUpdateable(physics);
-	
-    engine->core_loop(scene);
+    Player p;
+    scene.addDrawable(p);
+    scene.addUpdateable(p);
+
+    Ball* ba = new Ball(&physics);
+    scene.addDrawable(*ba);
+    scene.addUpdateable(*ba);
+    physics.getWorld()->SetContactListener(ba);
+
+    
+
+    scene.addUpdateable(physics);
+	engine->core_loop(scene);
 	engine->shutdown();
 }
