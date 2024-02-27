@@ -8,6 +8,7 @@
 #include "background.h"
 #include "ball.h"
 #include "player.h"
+#include "balcony.h"
 
 int main(int argc, char** argv){
 	int opt;
@@ -18,6 +19,7 @@ int main(int argc, char** argv){
 	Engine* engine = Engine::getInstance();
     PhysicsWorld physics(b2Vec2(0.0, -10.0f));
 
+    
 	b2BodyDef groundDef;
 	groundDef.position.Set(0.0f, -4.5f);
 	groundDef.type=b2_staticBody;
@@ -26,8 +28,9 @@ int main(int argc, char** argv){
 	groundBox.SetAsBox(50.0f, 1.0f);
 	ground->CreateFixture(&groundBox, 1.0f);
 
-    /*
-	b2BodyDef leftDef;
+
+	/*
+    b2BodyDef leftDef;
 	leftDef.position.Set(0.0f, -7.6f);
 	leftDef.type=b2_staticBody;
 	b2Body* left = physics.addBody(&leftDef);
@@ -50,6 +53,9 @@ int main(int argc, char** argv){
     Player p;
     scene.addDrawable(p);
     scene.addUpdateable(p);
+
+    Balcony bc(135,220);
+    scene.addDrawable(bc);
 
     Ball* ba = new Ball(&physics);
     scene.addDrawable(*ba);

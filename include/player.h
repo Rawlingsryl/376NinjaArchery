@@ -12,6 +12,8 @@ class Player : public Drawable, public Updateable {
 
 	private:
         float elapsed;
+        int center;
+        int angle;
 };
 
 
