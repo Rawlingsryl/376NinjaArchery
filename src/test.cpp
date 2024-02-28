@@ -9,6 +9,7 @@
 #include "ball.h"
 #include "player.h"
 #include "balcony.h"
+#include "arrow.h"
 
 int main(int argc, char** argv){
 	int opt;
@@ -19,7 +20,6 @@ int main(int argc, char** argv){
 	Engine* engine = Engine::getInstance();
     PhysicsWorld physics(b2Vec2(0.0, -10.0f));
 
-    
 	b2BodyDef groundDef;
 	groundDef.position.Set(0.0f, -4.5f);
 	groundDef.type=b2_staticBody;
@@ -27,7 +27,6 @@ int main(int argc, char** argv){
 	b2PolygonShape groundBox;
 	groundBox.SetAsBox(50.0f, 1.0f);
 	ground->CreateFixture(&groundBox, 1.0f);
-
 
 	/*
     b2BodyDef leftDef;
@@ -56,13 +55,16 @@ int main(int argc, char** argv){
 
     Balcony bc(135,220);
     scene.addDrawable(bc);
-
+/*
     Ball* ba = new Ball(&physics);
     scene.addDrawable(*ba);
     scene.addUpdateable(*ba);
     physics.getWorld()->SetContactListener(ba);
-
-    
+*/
+    Arrow* a = new Arrow(&physics);
+    scene.addDrawable(*a);
+    scene.addUpdateable(*a);
+    physics.getWorld()->SetContactListener(a);
 
     scene.addUpdateable(physics);
 	engine->core_loop(scene);
