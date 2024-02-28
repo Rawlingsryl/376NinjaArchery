@@ -21,6 +21,8 @@ class Arrow : public Drawable, public Updateable, public b2ContactListener {
 		int y_vel;
 		b2Body* body;
 		b2BodyDef* bodyDef;
+		float elapsedTime;
+		int numTimes;
 };
 
 #endif

@@ -11,15 +11,19 @@ Arrow::Arrow(PhysicsWorld* physics){
 
 	// Generate a random number between 0 and RAND_MAX
 	loadImage("/home/fidlerja/Public/images-2/arrow_middle.png");
+
 	// Need a body definition before we can make a body
 	bodyDef = new b2BodyDef();
 	bodyDef->type = b2_dynamicBody;
-	bodyDef->position.Set(1.25,.75);
+	bodyDef->position.Set(-1,.75); //arrow starts having spawned offscreen
 	// Physics engine makes the body for us and returns a pointer to it
 	body = physics->addBody(bodyDef);
 	// Need a shape
 	b2PolygonShape arrowShape;
-	arrowShape.SetAsBox(.01,.1);
+	//set as box takes half the width and half the height as it's parameters.
+	//since it's 36x12 pixels, we divide by 100 like always and then by 2
+	//to get the half sizes.
+	arrowShape.SetAsBox(.18,.06);
 	// Must apply a fixture.  Fixes shape and other properties to it.
 	b2FixtureDef arrowFixture;
 	arrowFixture.shape = &arrowShape;
@@ -28,6 +32,8 @@ Arrow::Arrow(PhysicsWorld* physics){
 	arrowFixture.restitution = 0.3f;
 	// Make the fixture.
 	body->CreateFixture(&arrowFixture);
+	elapsedTime = 0;
+	numTimes = 0;
 }
 
 Arrow::~Arrow(){
@@ -43,7 +49,31 @@ b2BodyDef* Arrow::getBodyDef(){
 }
 
 void Arrow::update(double delta){
+	elapsedTime += delta;
+	if(elapsedTime > 2 && numTimes < 1){ // if 2 seconds have passed, and we haven't already moved
+		body->SetTransform(b2Vec2(1.25,-1.75),body->GetAngle()); //move arrow to correct position
+		std::cout << "moved" << std::endl;//debugging print, can be deleted
+		numTimes = 1; //making sure we don't keep moving the arrow
 
+		//fling arrow to right, the force has to be pretty high for it to go anywhere
+		b2Vec2 right(20.0f, 0.0f); 
+    	b2Vec2 pos = body->GetPosition(); 
+    	body->ApplyForce(right, pos, true);
+	}
+
+	/*
+	TODO: figure out mouse events, move arrow to bow and fire it when mouse clicks, 
+	look to code above for what that looks like.
+
+	Then, arrow needs to have collision detection, when it collides with a enemy,
+	a. move the arrow back offscreen, 
+	body->SetTransform(b2Vec2(-1,.75),body->GetAngle()); (I think this would work)
+
+	b. delete the enemy, or also move the enemy into the abyss offscreen.
+	moving it to like (-5, -5) would probably do that.
+	It's not best practice but it might be easier to just move it offscreen
+	even though we would NOT do that in an official product due to memory/processing waste
+	*/
 }
 
 void Arrow::draw(SDL_Renderer* renderer){

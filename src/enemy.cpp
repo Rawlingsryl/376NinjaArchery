@@ -14,7 +14,8 @@ Enemy::Enemy(PhysicsWorld* physics, int spawnTime, int spawnPoint){
 	std::mt19937 gen(rd());
 	std::uniform_int_distribution<int> distribution(10, 12);
 	animation = 0;
-	
+	framesSinceLastAnimation = 0;
+	timeElapsed = 0;
 
 	// Generate a random number between 0 and RAND_MAX
 	loadImage("/home/fidlerja/Public/images-2/Erun1.png");
@@ -26,7 +27,7 @@ Enemy::Enemy(PhysicsWorld* physics, int spawnTime, int spawnPoint){
 	body = physics->addBody(bodyDef);
 	// Need a shape
 	b2PolygonShape enemyShape;
-	enemyShape.SetAsBox(.16, .16);
+	enemyShape.SetAsBox(0.24, .3);
 	// Must apply a fixture.  Fixes shape and other properties to it.
 	b2FixtureDef enemyFixture;
 	enemyFixture.shape = &enemyShape;
@@ -74,11 +75,14 @@ void Enemy::update(double delta){
 		}
 		animation += 1;
 		framesSinceLastAnimation = 0;
+
+		
 	}
 
 	//std::cout << body->GetPosition().x << ", " << body->GetPosition().y << std::endl;
 	//makes them run left, only applies the force for 3 seconds (change spawnTime + X to make it go X seconds)
 	if (timeElapsed > spawnTime && timeElapsed < spawnTime + 3){
+
 		b2Vec2 left(-0.0001f, 0.0f);
     	b2Vec2 pos = body->GetPosition();
     	body->ApplyLinearImpulse(left, pos, true);
@@ -90,12 +94,7 @@ void Enemy::draw(SDL_Renderer* renderer){
 	SDL_Rect dest;
 	b2Vec2 pos = body->GetPosition();
 	dest.x = pos.x * 100;
-	dest.y = pos.y * -1 * 100 -20; // added a -20 here to make the image level with the bridge.
-	//the shape is level with the bridge, but due to the image having transparent space around the whole ninja
-	//if the shape is the same size as the ninja itself and not the whole image, it prints the ninja below/inside the bridge.
-	//this is solved by just printing the picutre an arbitrary number of pixels up. This, in theory
-	//makes the shape (hitbox) roughly the same size as the ninja, might have to toy around a bit with the size yet.
-	//cannot do that without an arrow to shoot at it.
+	dest.y = pos.y * -1 * 100;
 	dest.w = rect.w;
 	dest.h = rect.h;
 	float angle = body->GetAngle();
