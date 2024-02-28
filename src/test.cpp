@@ -66,6 +66,18 @@ int main(int argc, char** argv){
     scene.addUpdateable(*a);
     physics.getWorld()->SetContactListener(a);
 
+	Enemy* enemy1 = new Enemy(&physics, 1, 12);
+	scene.addDrawable(*enemy1);
+    scene.addUpdateable(*enemy1);
+
+	Enemy* enemy2 = new Enemy(&physics, 1, 14);
+	scene.addDrawable(*enemy2);
+    scene.addUpdateable(*enemy2);
+
+	Enemy* enemy3 = new Enemy(&physics, 1, 16);
+	scene.addDrawable(*enemy3);
+    scene.addUpdateable(*enemy3);
+
     scene.addUpdateable(physics);
 	engine->core_loop(scene);
 	engine->shutdown();
