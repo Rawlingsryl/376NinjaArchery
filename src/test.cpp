@@ -10,6 +10,7 @@
 #include "player.h"
 #include "balcony.h"
 #include "arrow.h"
+#include "enemy.h"
 
 int main(int argc, char** argv){
 	int opt;
@@ -55,17 +56,19 @@ int main(int argc, char** argv){
 
     Balcony bc(135,220);
     scene.addDrawable(bc);
-/*
+    
+    /*
     Ball* ba = new Ball(&physics);
     scene.addDrawable(*ba);
     scene.addUpdateable(*ba);
     physics.getWorld()->SetContactListener(ba);
-*/
+    */
+    
     Arrow* a = new Arrow(&physics);
     scene.addDrawable(*a);
     scene.addUpdateable(*a);
     physics.getWorld()->SetContactListener(a);
-
+    
 	Enemy* enemy1 = new Enemy(&physics, 1, 12);
 	scene.addDrawable(*enemy1);
     scene.addUpdateable(*enemy1);
