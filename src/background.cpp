@@ -21,9 +21,8 @@ void Background::draw(SDL_Renderer* renderer){
 	dest.y = y;
 	dest.w = 1024;
     dest.h = 768;
-    //dest.w = 680;
-    //dest.h = 480;
-	int result = SDL_RenderCopy(renderer, texture, NULL, &dest);
+	
+    int result = SDL_RenderCopy(renderer, texture, NULL, &dest);
 	if(result != 0){
 		std::cout << SDL_GetError() << std::endl;
 	}

@@ -5,7 +5,7 @@
 #include "LEAGUE/physics.h"
 #include <box2d/box2d.h>
 
-class Arrow : public Drawable, public Updateable, public b2ContactListener {
+class Arrow : public Drawable, public Updateable, public b2ContactListener, public b2ContactManager {
 	public:
 		Arrow(PhysicsWorld*);
 		~Arrow();
@@ -24,6 +24,7 @@ class Arrow : public Drawable, public Updateable, public b2ContactListener {
 		float elapsedTime;
 		int numTimes;
 		bool mouseDown;
+		
 };
 
 #endif

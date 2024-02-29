@@ -23,6 +23,8 @@ Enemy::Enemy(PhysicsWorld* physics, int spawnTime, int spawnPoint){
 	bodyDef = new b2BodyDef();
 	bodyDef->type = b2_dynamicBody;
 	bodyDef->position.Set(spawnPoint,.5);
+	
+
 	// Physics engine makes the body for us and returns a pointer to it
 	body = physics->addBody(bodyDef);
 	// Need a shape
@@ -34,7 +36,8 @@ Enemy::Enemy(PhysicsWorld* physics, int spawnTime, int spawnPoint){
 	enemyFixture.density = 1.0f;
 	enemyFixture.friction = 0.0f;
 	enemyFixture.restitution = 0.1f;
-	// Make the fixture.
+
+    // Make the fixture.
 	body->CreateFixture(&enemyFixture);
 }
 
@@ -51,43 +54,40 @@ b2BodyDef* Enemy::getBodyDef(){
 }
 
 void Enemy::update(double delta){
-	timeElapsed += delta;
-    framesSinceLastAnimation += 1;
-	//handles the running animation
-    if(framesSinceLastAnimation > 10){
-		if(animation%6 == 0){
-			loadImage("/home/fidlerja/Public/images-2/Erun1.png");
-		}
-		if(animation%6 == 1){
-			loadImage("/home/fidlerja/Public/images-2/Erun2.png");
-		}
-		if(animation%6 == 2){
-			loadImage("/home/fidlerja/Public/images-2/Erun3.png");
-		}
-		if(animation%6 == 3){
-			loadImage("/home/fidlerja/Public/images-2/Erun4.png");
-		}
-		if(animation%6 == 4){
-			loadImage("/home/fidlerja/Public/images-2/Erun5.png");
-		}
-		if(animation%6 == 5){
-			loadImage("/home/fidlerja/Public/images-2/Erun6.png");
-		}
-		animation += 1;
-		framesSinceLastAnimation = 0;
+        timeElapsed += delta;
+        framesSinceLastAnimation += 1;
+	    //handles the running animation
+        if(framesSinceLastAnimation > 10){
+	    	if(animation%6 == 0){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun1.png");
+	    	}
+	    	if(animation%6 == 1){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun2.png");
+	    	}
+	    	if(animation%6 == 2){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun3.png");
+	    	}
+	    	if(animation%6 == 3){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun4.png");
+	    	}
+	    	if(animation%6 == 4){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun5.png");
+	    	}
+	    	if(animation%6 == 5){
+	    		loadImage("/home/fidlerja/Public/images-2/Erun6.png");
+	    	}
+		    animation += 1;
+		    framesSinceLastAnimation = 0;
+	    }
 
-		
-	}
-
-	//std::cout << body->GetPosition().x << ", " << body->GetPosition().y << std::endl;
-	//makes them run left, only applies the force for 3 seconds (change spawnTime + X to make it go X seconds)
-	if (timeElapsed > spawnTime && timeElapsed < spawnTime + 3){
-
-		b2Vec2 left(-0.0001f, 0.0f);
-    	b2Vec2 pos = body->GetPosition();
-    	body->ApplyLinearImpulse(left, pos, true);
-	}
+	    //std::cout << body->GetPosition().x << ", " << body->GetPosition().y << std::endl;
+	    //makes them run left, only applies the force for 3 seconds (change spawnTime + X to make it go X seconds)
+	    if (timeElapsed > spawnTime && timeElapsed < spawnTime + 500){
     
+	    	b2Vec2 left(-0.0002f, 0.0f);
+        	b2Vec2 pos = body->GetPosition();
+    	    body->ApplyLinearImpulse(left, pos, true);
+	    }
 }
 
 void Enemy::draw(SDL_Renderer* renderer){
@@ -107,10 +107,10 @@ void Enemy::draw(SDL_Renderer* renderer){
 
 void Enemy::BeginContact(b2Contact* contact){
     std::cout << contact->GetFixtureB() << std::endl;
+    
 }
 
 void Enemy::EndContact(b2Contact* contact){
-    
 }
 
 b2Body* Enemy::getBody(){

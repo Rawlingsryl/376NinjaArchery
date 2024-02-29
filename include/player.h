@@ -9,11 +9,12 @@ class Player : public Drawable, public Updateable {
 		~Player();
 		void draw(SDL_Renderer* renderer) override;
 		void update(double delta) override;
+		int getAngle();
 
 	private:
         float elapsed;
         int center;
-        int angle;
+		int angle;
 };
 
 

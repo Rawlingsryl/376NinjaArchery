@@ -5,7 +5,6 @@
 #include <iostream>
 #include <string>
 #include <box2d/box2d.h>
-//#include <chrono>
 
 
 Arrow::Arrow(PhysicsWorld* physics){
@@ -36,7 +35,6 @@ Arrow::Arrow(PhysicsWorld* physics){
 	numTimes = 0;
 	mouseDown = false;
 }
-
 Arrow::~Arrow(){
 	delete bodyDef;
 }
@@ -77,16 +75,14 @@ void Arrow::update(double delta){
 			mouseDown = true; //to keep track of when mouse is down
         }
         else if(event->type==SDL_MOUSEBUTTONUP){
-            //auto end = high_resolution_clock::now();
-            //auto duration = duration_cast<milliseconds<(end-beg);
             std::cout << "Elapsed Time: " << elapsedTime <<std::endl;
-			body->SetTransform(b2Vec2(1.6,-1.75),body->GetAngle());
+			body->SetTransform(b2Vec2(1.6,-1.75), body->GetAngle());
 			// resets velocity before we apply next force so the arrow doesn't keep velocity from previous shots
 			body->SetLinearVelocity(b2Vec2(0,0)); 
-			float rightwardForce = 60.0f * elapsedTime; // force determined by elapsed time, 
+			float rightwardForce = 30.0f * elapsedTime; // force determined by elapsed time, 
 			//increase 60.0f if you want force to increase more in less time.
-			if (rightwardForce > 60.0f){
-				rightwardForce = 60.0f; //setting a max force, current max reached after 1 sec of mouseHold
+			if (rightwardForce > 30.0f){
+				rightwardForce = 30.0f; //setting a max force, current max reached after 1 sec of mouseHold
 			}
 			std::cout << "rightwordForce: " << rightwardForce <<std::endl;
 			b2Vec2 right(rightwardForce,0.0f);
@@ -128,9 +124,16 @@ void Arrow::draw(SDL_Renderer* renderer){
 }
 
 void Arrow::BeginContact(b2Contact* contact){
-    std::cout << contact->GetFixtureB() << std::endl;
-	this->body->SetTransform(b2Vec2(-1.6,-1.75),body->GetAngle());
-	std::cout << "testing" << std::endl;
+	std::cout << contact->GetFixtureB() << std::endl;
+	
+	/*
+	b2Fixture *check = contact->GetFixtureB();
+	int* one = (int*)check->GetUserData();
+	if(*one == 1){
+		//WORKING ON FINDING HOW TO DESTROY ENEMY!!!!!!
+		//DELETE BODY
+	}
+	*/
 }
 
 void Arrow::EndContact(b2Contact* contact){

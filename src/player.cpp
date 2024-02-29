@@ -45,15 +45,8 @@ void Player::update(double delta){
             angle = targetAngle;
         }
     }
-
+    
     // Load appropriate texture based on angle
-    /*
-    if (angle != 0) {
-        loadImage("/home/fidlerja/Public/images-2/player-firing.png");
-    } else {
-        loadImage("/home/fidlerja/Public/images-2/player-idle.png");
-    }
-    */
     auto events = Engine::getEvents();
     for(auto event = events.begin(); event!=events.end(); ++event){
         if(event->type == SDL_MOUSEBUTTONDOWN){
@@ -80,4 +73,8 @@ void Player::draw(SDL_Renderer* renderer){
 	if(result != 0){
 		std::cout << SDL_GetError() << std::endl;
 	}
+}
+
+int Player::getAngle(){
+    return angle;
 }

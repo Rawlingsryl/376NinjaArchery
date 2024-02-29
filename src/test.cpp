@@ -26,7 +26,7 @@ int main(int argc, char** argv){
 	groundDef.type=b2_staticBody;
 	b2Body* ground = physics.addBody(&groundDef);
 	b2PolygonShape groundBox;
-	groundBox.SetAsBox(50.0f, 1.0f);
+	groundBox.SetAsBox(100.0f, 1.0f);
 	ground->CreateFixture(&groundBox, 1.0f);
 
 	/*
@@ -37,7 +37,7 @@ int main(int argc, char** argv){
 	b2PolygonShape leftBox;
 	leftBox.SetAsBox(1.0f, 50.0f);
 	left->CreateFixture(&leftBox, 1.0f);
-
+	*/
 	b2BodyDef rightDef;
 	rightDef.position.Set(10.0f, -7.6f);
 	rightDef.type=b2_staticBody;
@@ -45,7 +45,7 @@ int main(int argc, char** argv){
 	b2PolygonShape rightBox;
 	rightBox.SetAsBox(1.0f, 50.0f);
 	right->CreateFixture(&rightBox, 1.0f);
-    */
+    
 	  
     Background b;
     scene.addDrawable(b);
@@ -72,14 +72,16 @@ int main(int argc, char** argv){
 	Enemy* enemy1 = new Enemy(&physics, 1, 8);
 	scene.addDrawable(*enemy1);
     scene.addUpdateable(*enemy1);
+    //physics.getWorld()->SetContactListener(enemy1);
 
 	Enemy* enemy2 = new Enemy(&physics, 1, 9);
 	scene.addDrawable(*enemy2);
     scene.addUpdateable(*enemy2);
+    //physics.getWorld()->SetContactListener(enemy2);
 
-	// Enemy* enemy3 = new Enemy(&physics, 1, 10);
-	// scene.addDrawable(*enemy3);
-    // scene.addUpdateable(*enemy3);
+	//Enemy* enemy3 = new Enemy(&physics, 1, 10);
+	//scene.addDrawable(*enemy3);
+    //scene.addUpdateable(*enemy3);
 
     scene.addUpdateable(physics);
 	engine->core_loop(scene);

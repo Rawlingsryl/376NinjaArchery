@@ -28,6 +28,7 @@ class Enemy : public Drawable, public Updateable, public b2ContactListener {
 		int spawnTime;
 		int spawnPoint;
 		bool notSpawned;
+		
 };
 
 #endif
