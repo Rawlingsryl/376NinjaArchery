@@ -23,6 +23,7 @@ class Arrow : public Drawable, public Updateable, public b2ContactListener {
 		b2BodyDef* bodyDef;
 		float elapsedTime;
 		int numTimes;
+		bool mouseDown;
 };
 
 #endif

@@ -28,12 +28,13 @@ Arrow::Arrow(PhysicsWorld* physics){
 	b2FixtureDef arrowFixture;
 	arrowFixture.shape = &arrowShape;
 	arrowFixture.density = 1.0f;
-	arrowFixture.friction = 0.3f;
-	arrowFixture.restitution = 0.3f;
+	arrowFixture.friction = 1.0f;
+	arrowFixture.restitution = 0.0f;
 	// Make the fixture.
 	body->CreateFixture(&arrowFixture);
 	elapsedTime = 0;
 	numTimes = 0;
+	mouseDown = false;
 }
 
 Arrow::~Arrow(){
@@ -63,31 +64,36 @@ void Arrow::update(double delta){
 	}
     */
 
+   if(mouseDown){
+	elapsedTime += delta; //increase elapsed time if mouse is down
+   }
+
     //Referencing Bird Code from class for loop
     auto events = Engine::getEvents();
     for(auto event = events.begin(); event!=events.end(); ++event){
-        //auto beg = high_resolution_clock::now();
-        elapsedTime += delta;
+		
         if(event->type==SDL_MOUSEBUTTONDOWN){
-            body->SetTransform(b2Vec2(1.6,-1.75),body->GetAngle());
-            //elapsedTime += delta;
+            
+			mouseDown = true; //to keep track of when mouse is down
         }
         else if(event->type==SDL_MOUSEBUTTONUP){
             //auto end = high_resolution_clock::now();
             //auto duration = duration_cast<milliseconds<(end-beg);
             std::cout << "Elapsed Time: " << elapsedTime <<std::endl;
-            if(elapsedTime > 0.50f){
-                b2Vec2 right(30.0f,0.0f); //eventually want to add power per time
-                b2Vec2 pos = body->GetPosition();//but cant track elapsedTime consitent
-                body->ApplyForce(right,pos,true);
-                elapsedTime = 0;
-            }
-            else{
-                b2Vec2 right(15.0f,0.0f);
+			body->SetTransform(b2Vec2(1.6,-1.75),body->GetAngle());
+			// resets velocity before we apply next force so the arrow doesn't keep velocity from previous shots
+			body->SetLinearVelocity(b2Vec2(0,0)); 
+			float rightwardForce = 60.0f * elapsedTime; // force determined by elapsed time, 
+			//increase 60.0f if you want force to increase more in less time.
+			if (rightwardForce > 60.0f){
+				rightwardForce = 60.0f; //setting a max force, current max reached after 1 sec of mouseHold
+			}
+			std::cout << "rightwordForce: " << rightwardForce <<std::endl;
+			b2Vec2 right(rightwardForce,0.0f);
                 b2Vec2 pos = body->GetPosition();
                 body->ApplyForce(right,pos,true);
+				mouseDown = false; //mouse is no longer down
                 elapsedTime = 0;
-            }
         }
     }
 
@@ -122,7 +128,9 @@ void Arrow::draw(SDL_Renderer* renderer){
 }
 
 void Arrow::BeginContact(b2Contact* contact){
-    //std::cout << contact->GetFixtureB() << std::endl;
+    std::cout << contact->GetFixtureB() << std::endl;
+	this->body->SetTransform(b2Vec2(-1.6,-1.75),body->GetAngle());
+	std::cout << "testing" << std::endl;
 }
 
 void Arrow::EndContact(b2Contact* contact){
