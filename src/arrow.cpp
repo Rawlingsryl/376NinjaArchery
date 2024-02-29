@@ -5,11 +5,11 @@
 #include <iostream>
 #include <string>
 #include <box2d/box2d.h>
+//#include <chrono>
 
 
 Arrow::Arrow(PhysicsWorld* physics){
 
-	// Generate a random number between 0 and RAND_MAX
 	loadImage("/home/fidlerja/Public/images-2/arrow_middle.png");
 
 	// Need a body definition before we can make a body
@@ -49,6 +49,7 @@ b2BodyDef* Arrow::getBodyDef(){
 }
 
 void Arrow::update(double delta){
+    /*
 	elapsedTime += delta;
 	if(elapsedTime > 2 && numTimes < 1){ // if 2 seconds have passed, and we haven't already moved
 		body->SetTransform(b2Vec2(1.25,-1.75),body->GetAngle()); //move arrow to correct position
@@ -60,6 +61,35 @@ void Arrow::update(double delta){
     	b2Vec2 pos = body->GetPosition(); 
     	body->ApplyForce(right, pos, true);
 	}
+    */
+
+    //Referencing Bird Code from class for loop
+    auto events = Engine::getEvents();
+    for(auto event = events.begin(); event!=events.end(); ++event){
+        //auto beg = high_resolution_clock::now();
+        elapsedTime += delta;
+        if(event->type==SDL_MOUSEBUTTONDOWN){
+            body->SetTransform(b2Vec2(1.6,-1.75),body->GetAngle());
+            //elapsedTime += delta;
+        }
+        else if(event->type==SDL_MOUSEBUTTONUP){
+            //auto end = high_resolution_clock::now();
+            //auto duration = duration_cast<milliseconds<(end-beg);
+            std::cout << "Elapsed Time: " << elapsedTime <<std::endl;
+            if(elapsedTime > 0.50f){
+                b2Vec2 right(30.0f,0.0f); //eventually want to add power per time
+                b2Vec2 pos = body->GetPosition();//but cant track elapsedTime consitent
+                body->ApplyForce(right,pos,true);
+                elapsedTime = 0;
+            }
+            else{
+                b2Vec2 right(15.0f,0.0f);
+                b2Vec2 pos = body->GetPosition();
+                body->ApplyForce(right,pos,true);
+                elapsedTime = 0;
+            }
+        }
+    }
 
 	/*
 	TODO: figure out mouse events, move arrow to bow and fire it when mouse clicks, 
@@ -92,7 +122,7 @@ void Arrow::draw(SDL_Renderer* renderer){
 }
 
 void Arrow::BeginContact(b2Contact* contact){
-    std::cout << contact->GetFixtureB() << std::endl;
+    //std::cout << contact->GetFixtureB() << std::endl;
 }
 
 void Arrow::EndContact(b2Contact* contact){

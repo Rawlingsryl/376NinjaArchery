@@ -47,11 +47,23 @@ void Player::update(double delta){
     }
 
     // Load appropriate texture based on angle
+    /*
     if (angle != 0) {
         loadImage("/home/fidlerja/Public/images-2/player-firing.png");
     } else {
         loadImage("/home/fidlerja/Public/images-2/player-idle.png");
     }
+    */
+    auto events = Engine::getEvents();
+    for(auto event = events.begin(); event!=events.end(); ++event){
+        if(event->type == SDL_MOUSEBUTTONDOWN){
+            loadImage("/home/fidlerja/Public/images-2/player-firing.png");
+        }
+        else if(event->type == SDL_MOUSEBUTTONUP){
+            loadImage("/home/fidlerja/Public/images-2/player-idle.png");
+        }
+    }
+
 }
 
 
